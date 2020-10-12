@@ -1,0 +1,56 @@
+# Default values for kube-admission.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+apiGroupName: sls.ext.aliyun.com
+
+# todo: add Dockerfile
+# todo: usage docker image in docker hub
+image:
+  repository:
+  tag:
+
+container:
+  httpPort: 8000
+  command:
+  - run_http_server
+
+imagePullSecrets:
+- name: image-registry-secret
+
+service:
+  type: ClusterIP
+  port: 80
+
+clusterDomainSuffix: cluster.local
+
+crds:
+- spec:
+    conversion:
+      strategy: None
+    names:
+      kind: AliyunLogAlertor
+      listKind: AliyunLogAlertorList
+      plural: aliyunlogalertors
+      singular: aliyunlogalertor
+      shortNames:
+      - ala
+    scope: Namespaced
+    versions:
+    - name: v1alpha1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          x-kubernetes-preserve-unknown-fields: true
+
+hack:
+  configMapEnv:
+    name: alibaba-log-configuration
+    items:
+      ENDPOINT: log-endpoint
+      LOG_PROJECT_NAME: log-project
+  env:
+    ACCESS_KEY_SECRET: xxxx
+    ACCESS_KEY_ID: xxxx

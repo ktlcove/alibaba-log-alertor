@@ -1,0 +1,37 @@
+apiVersion: sls.aliyun.bsj.com/v1alpha1
+kind: AliyunLogAlertor
+metadata:
+  name: test4
+spec:
+  detail:
+    name: test-abcd-1
+    displayName: 'k8s-access-delaytime'
+    description: 'test-description'
+    type: 'Alert'
+    state: 'Enabled'
+    recyclable: false
+    schedule:
+      type: Cron
+      cronExpression: '*/1 * * * *'
+      delay: 0
+      runImmediately: false
+    configuration:
+      condition: 'avg_time > 30'
+      dashboard: dashboard-test
+      notifyThreshold: 1
+      throttling: 1m
+      sendRecoveryMessage: true
+      queryList:
+      - logStore: k8s-access
+        start: -300s
+        end: now
+        timeSpanType: Relative
+        chartTitle: test-abcd-1
+        query: "* | select avg(request_time) as avg_time"
+      notificationList:
+      - type: Webhook
+        serviceUri: 'http://sample/hook/address'
+        method: POST
+        headers:
+          X-Tags: 'prometheus,warning'
+        content: '${FireTime} ${AlertDisplayName}  ${Results}'
