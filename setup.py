@@ -12,7 +12,7 @@ requirements = [
 
 entry_points = {
     "console_scripts": [
-        'run_http_server = aliyun_log_alertor:http_main',
+        'run_http_server = alibaba_log_alertor:http_main',
     ]
 }
 

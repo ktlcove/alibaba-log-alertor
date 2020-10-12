@@ -105,4 +105,4 @@ class Mutate(ABCAdmissionReviewView):
 
 
 def http_main():
-    return admission_main('aliyun_log_alertor:app')
+    return admission_main('alibaba_log_alertor:app')
